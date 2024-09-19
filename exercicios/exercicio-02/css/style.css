@@ -1,0 +1,224 @@
+/* 
+vars
+start
+*/
+:root {
+    --backgroundColor: #ffffff;
+    --textColor: #333333;
+}
+
+[dataTheme="dark"] {
+    --backgroundColor: #333333;
+    --textColor: #ffffff;
+}
+/*
+vars
+end
+*/
+
+/*
+utilities
+start
+*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.container {
+    width: 100%;
+    margin: 0 auto;
+}
+/* media queries to responsive container */
+@media (min-width: 576px) {
+    .container {
+        max-width: 540px;
+    }
+}
+@media (min-width: 768px) {
+    .container {
+        max-width: 720px;
+    }
+}
+@media (min-width: 992px) {
+    .container {
+        max-width: 960px;
+    }
+}
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px;
+    }
+}
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1320px;
+    }
+}
+/* media queries to personal config container */
+@media (max-width: 575px) {
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
+/*
+utilities
+end
+*/
+
+/*
+themes
+start
+*/
+
+/*
+themes
+end
+*/
+
+.flex {
+    display: flex;
+}
+
+.jCenter {
+    justify-content: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+body {
+    background-color: var(--backgroundColor);
+    color: var(--textColor);
+    font-family: "Protest Guerrilla", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+section#todo {
+    padding: 1rem 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+div#themes {
+    padding-left: 0.5rem;
+}
+
+div#themes div {
+    display: flex;
+    align-items: center;
+}
+
+div#themes div button {
+    background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+}
+
+div#themes div button svg {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+div#searchBox {
+    display: flex;
+}
+
+@media (max-width: 768px) {
+    div#searchBox {
+        flex-direction: column;
+    }
+
+    div#searchBox div:first-child {
+        margin-bottom: 1vh;
+    }
+}
+
+div#searchBox div input {
+    border: 1px solid #8f8f8f;
+    padding: 0.1rem;
+}
+
+div#searchBox div input::placeholder {
+    color: #8f8f8f;
+}
+
+div#searchBox div input:focus {
+    outline: none;
+}
+
+div#searchBox div {
+    display: flex;
+    justify-content: center;
+}
+
+@media (min-width: 769px) {
+    div#searchBox div:first-child {
+        padding-right: 0.125rem;
+    }
+}
+
+div#searchBox div button {
+    width: auto;
+    border: 1px solid #8f8f8f;
+    border-left: none;
+    background: #e2e2e2;
+    display: flex;
+    justify-content: center;
+}
+
+div#searchBox div button:hover {
+    cursor: pointer;
+}
+
+div#searchBox div button svg {
+    width: 1rem;
+}
+
+div#todoList {
+    padding: 1rem 0px;
+    display: inline-block;
+    width: 75%;
+}
+
+div#todoList div.todoItem {
+    min-width: 50%;
+    display: flex;  
+    font-size: 13px;
+}
+
+div#todoList div.todoItem input:checked + p {
+    text-decoration: line-through;
+    color: lightgray;
+}
+
+div#todoList div.todoItem button {
+    margin-left: auto;
+    background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;   
+}
+
+div#todoList div.todoItem button svg path {
+    stroke: var(--textColor);
+}
+
+table,
+th,
+td {
+    border: 1px solid;
+    padding: 0.25rem;
+}
