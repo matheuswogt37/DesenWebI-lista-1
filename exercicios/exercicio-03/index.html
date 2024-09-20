@@ -1,11 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Good Images</title>
-</head>
-<body>
-    Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus pariatur voluptate veritatis facere quia ad ullam natus at blanditiis atque velit, eum debitis sunt praesentium assumenda vero quibusdam sed cum.
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="shortcut icon"
+            href="imgs/favicon-16x16.ico"
+            type="image/x-icon"
+        />
+        <title>Good Images</title>
+
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+        <main>
+            <br />
+            <!-- DEV -->
+            <section id="form" class="container">
+                <!-- <form action=""> -->
+                    <input type="text" name="" id="altura" placeholder="Altura" />
+                    <input type="text" name="" id="largura" placeholder="Largura" />
+                    <select name="qtdImagens" id="qtdImagens">
+                        <option value="0" selected>Quantas imagens?</option>
+                        <option value="3">3</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                    </select>
+                    <button onclick="requestImgs()">requisitar</button>
+                <!-- </form> -->
+            </section>
+            <section id="imagens" class="container">
+                <div id="galeria">
+                </div>
+                <div id="erro" class="escondido">
+                    ERROR medidas inválidas! por favor recarregue a página
+                </div>
+            </section>
+            <script src="js/script.js"></script>
+        </main>
+    </body>
 </html>

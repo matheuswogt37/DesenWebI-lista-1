@@ -1,0 +1,124 @@
+/*
+utilities
+start
+*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.container {
+    width: 100%;
+    margin: 0 auto;
+}
+/* media queries to responsive container */
+@media (min-width: 576px) {
+    .container {
+        max-width: 540px;
+    }
+}
+@media (min-width: 768px) {
+    .container {
+        max-width: 720px;
+    }
+}
+@media (min-width: 992px) {
+    .container {
+        max-width: 960px;
+    }
+}
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px;
+    }
+}
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1320px;
+    }
+}
+/* media queries to personal config container */
+@media (max-width: 575px) {
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
+/*
+utilities
+end
+*/
+
+.escondido {
+    display: none!important;
+}
+
+main {
+    font-size: 18pt;
+}
+
+main > * {
+    margin: 0.25rem 0;
+    display: flex;
+    justify-content: center;
+}
+
+section#imagens div#galeria {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, auto);
+    grid-gap: 1rem;
+}
+
+section#imagens div#galeria div.imgDiv {
+    position: relative;
+    display: inline-block;
+}
+
+section#imagens div#galeria div.imgDiv img.img {
+    opacity: 1;
+    display: block;
+    max-width: 100%;
+    transition: 0.5s ease;
+    backface-visibility: hidden;
+}
+
+section#imagens div#galeria div.imgDiv:hover img.img {
+    opacity: 0.3;
+}
+
+section#imagens div#galeria div.imgDiv div.imgTexto {
+    transition: 0.5s ease;
+    width: 100%;
+    opacity: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    position: absolute;
+    justify-content: center;
+}
+
+/* section#imagens div#galeria div.imgDiv div.imgTexto { */
+section#imagens div#galeria div.imgDiv:hover div.imgTexto {
+    opacity: 1;
+    display: flex;
+}
+
+section#imagens div#galeria div.imgDiv div.imgTexto button {
+    margin-left: 0.25rem;
+}
+
+section#imagens div#galeria div.imgDiv div.imgTexto button:first-child {
+    margin-left: 0;
+}
+
+/* section#imagens div#galeria div.imgDiv div.imgTexto img { */
+section#imagens div#galeria div.imgDiv:hover div.imgTexto img {
+    width: 1rem;
+}
+
+section#imagens div#erro {
+    color: darkred;
+}
