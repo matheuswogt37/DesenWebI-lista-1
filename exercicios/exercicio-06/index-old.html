@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="css/style.css" />
+        <link
+            rel="shortcut icon"
+            href="imgs/mouse-icon.svg"
+            type="image/x-icon"
+        />
+        <title>Página inicial</title>
+    </head>
+    <body>
+        <header></header>
+        <div id="myModal" class="modal mHidden">
+            <div class="modalContent">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <p id="modalMessage"></p>
+            </div>
+        </div>
+        <main>
+            <section id="secProducts" class="container">
+                <h2>E-Mouse produtos e periféricos</h2>
+                <div id="products"></div>
+            </section>
+        </main>
+        <footer></footer>
+        <script>
+            function loadHeader() {
+                fetch("header.html")
+                    .then((res) => res.text())
+                    .then((data) => {
+                        document.getElementsByTagName("header")[0].innerHTML =
+                            data;
+                        const cartItems = (
+                            JSON.parse(localStorage.getItem("items")) || []
+                        ).length;
+                        console.log(cartItems);
+                        document.getElementById("lblCartCount").innerHTML =
+                            cartItems;
+                    })
+                    .catch((error) =>
+                        console.error("Error load header: ", error)
+                    );
+            }
+            function loadFooter() {
+                fetch("footer.html")
+                    .then((res) => res.text())
+                    .then((data) => {
+                        document.getElementsByTagName("footer")[0].innerHTML =
+                            data;
+                    })
+                    .catch((error) => {
+                        console.error("Error load footer: ", error);
+                    });
+            }
+            function getAllProducts() {
+                const fatDivProducts = document.getElementById("products");
+                let newChildDiv;
+                let newChildDivDiv;
+                let newChildImg;
+                let newChildH1;
+                let newChildPrice;
+                let newChildButton;
+                fetch("https://dummyjson.com/products")
+                    .then((res) => res.json())
+                    .then((res) => {
+                        res.products.forEach((resp) => {
+                            newChildDiv = document.createElement("div");
+                            newChildDivDiv = document.createElement("div");
+                            newChildImg = document.createElement("img");
+                            newChildH1 = document.createElement("h1");
+                            newChildPrice = document.createElement("p");
+                            newChildButton = document.createElement("button");
+                            newChildImg.setAttribute("src", resp.images[0]);
+                            newChildImg.setAttribute("alt", resp.description);
+
+                            newChildH1.innerHTML = resp.title;
+
+                            newChildPrice.setAttribute("class", "price");
+                            newChildPrice.innerHTML = "$" + resp.price;
+
+                            newChildButton.setAttribute("value", resp.id);
+                            newChildButton.addEventListener("click", () => {
+                                addCart(
+                                    resp.id,
+                                    resp.title,
+                                    resp.price,
+                                    resp.images[0],
+                                    resp.description
+                                );
+                            });
+                            newChildButton.innerHTML = "Add ao carrinho";
+
+                            newChildDiv.appendChild(newChildImg);
+                            newChildDivDiv.appendChild(newChildH1);
+                            newChildDivDiv.appendChild(newChildPrice);
+                            newChildDivDiv.appendChild(newChildButton);
+                            newChildDiv.appendChild(newChildDivDiv);
+
+                            fatDivProducts.appendChild(newChildDiv);
+                        });
+                    });
+            }
+
+            function addCart(id, name, price, image, description) {
+                // const id = Date.now();
+                // const items = JSON.parse(localStorage.getItem("items")) || [];
+                // items.push({ id, text, status: 0 });
+                // localStorage.setItem("items", JSON.stringify(items));
+                // return items[items.length - 1];
+
+                const cartItems =
+                    JSON.parse(localStorage.getItem("items")) || [];
+                cartItems.push({ id, name, price, image, description });
+                localStorage.setItem("items", JSON.stringify(cartItems));
+
+                document.getElementById(
+                    "modalMessage"
+                ).textContent = `Produto ${name} adicionado ao seu carrinho!`;
+
+                const lengthCart = (
+                    JSON.parse(localStorage.getItem("items")) || []
+                ).length;
+                document.getElementById("lblCartCount").innerHTML = lengthCart;
+                document.getElementById("myModal").style.display = "block";
+            }
+
+            function closeModal() {
+                document.getElementById("myModal").style.display = "none";
+            }
+
+            loadHeader();
+            loadFooter();
+            getAllProducts();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="css/style.css" />
+        <link
+            rel="shortcut icon"
+            href="imgs/mouse-icon.svg"
+            type="image/x-icon"
+        />
+        <title>Página inicial</title>
+    </head>
+    <body>
+        <header></header>
+        <div id="myModal" class="modal mHidden">
+            <div class="modalContent">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <p id="modalMessage"></p>
+            </div>
+        </div>
+        <main>
+            <section id="secProducts" class="container">
+                <h2>E-Mouse produtos e periféricos</h2>
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Buscar produtos..."
+                />
+                <select id="categorySelect">
+                    <option value="">Todas as categorias</option>
+                </select>
+                <div id="products"></div>
+            </section>
+        </main>
+        <footer></footer>
+        <script>
+            let allProducts = [];
+            let allCategories = [];
+
+            function loadHeader() {
+                fetch("header.html")
+                    .then((res) => res.text())
+                    .then((data) => {
+                        document.getElementsByTagName("header")[0].innerHTML =
+                            data;
+                        const cartItems = (
+                            JSON.parse(localStorage.getItem("items")) || []
+                        ).length;
+                        document.getElementById("lblCartCount").innerHTML =
+                            cartItems;
+                    })
+                    .catch((error) =>
+                        console.error("Error load header: ", error)
+                    );
+            }
+
+            function loadFooter() {
+                fetch("footer.html")
+                    .then((res) => res.text())
+                    .then((data) => {
+                        document.getElementsByTagName("footer")[0].innerHTML =
+                            data;
+                    })
+                    .catch((error) => {
+                        console.error("Error load footer: ", error);
+                    });
+            }
+
+            function getAllCategories() {
+                fetch("https://dummyjson.com/products/categories")
+                    .then((res) => res.json())
+                    .then((categories) => {
+                        categories.forEach((category) => {
+                            allCategories.push(category.name);
+                        });
+                        populateCategorySelect(allCategories);
+                    });
+            }
+
+            function populateCategorySelect(categories) {
+                const categorySelect =
+                    document.getElementById("categorySelect");
+                categories.forEach((category) => {
+                    const option = document.createElement("option");
+                    option.value = category;
+                    option.textContent = category;
+                    categorySelect.appendChild(option);
+                });
+            }
+
+            function getAllProducts() {
+                fetch("https://dummyjson.com/products")
+                    .then((res) => res.json())
+                    .then((res) => {
+                        allProducts = res.products; // Armazena todos os produtos
+                        displayProducts(allProducts); // Exibe todos os produtos
+                    });
+            }
+
+            function displayProducts(products) {
+                const fatDivProducts = document.getElementById("products");
+                fatDivProducts.innerHTML = ""; // Limpa a div antes de exibir
+                products.forEach((resp) => {
+                    const newChildDiv = document.createElement("div");
+                    const newChildDivDiv = document.createElement("div");
+                    const newChildImg = document.createElement("img");
+                    const newChildH1 = document.createElement("h1");
+                    const newChildPrice = document.createElement("p");
+                    const newChildButton = document.createElement("button");
+
+                    newChildImg.setAttribute("src", resp.images[0]);
+                    newChildImg.setAttribute("alt", resp.description);
+                    newChildH1.innerHTML = resp.title;
+                    newChildPrice.setAttribute("class", "price");
+                    newChildPrice.innerHTML = "$" + resp.price;
+
+                    newChildButton.setAttribute("value", resp.id);
+                    newChildButton.addEventListener("click", () => {
+                        addCart(
+                            resp.id,
+                            resp.title,
+                            resp.price,
+                            resp.images[0],
+                            resp.description
+                        );
+                    });
+                    newChildButton.innerHTML = "Add ao carrinho";
+
+                    newChildDiv.appendChild(newChildImg);
+                    newChildDivDiv.appendChild(newChildH1);
+                    newChildDivDiv.appendChild(newChildPrice);
+                    newChildDivDiv.appendChild(newChildButton);
+                    newChildDiv.appendChild(newChildDivDiv);
+                    fatDivProducts.appendChild(newChildDiv);
+                });
+            }
+
+            function addCart(id, name, price, image, description) {
+                const cartItems =
+                    JSON.parse(localStorage.getItem("items")) || [];
+                cartItems.push({ id, name, price, image, description });
+                localStorage.setItem("items", JSON.stringify(cartItems));
+
+                document.getElementById(
+                    "modalMessage"
+                ).textContent = `Produto ${name} adicionado ao seu carrinho!`;
+                const lengthCart = (
+                    JSON.parse(localStorage.getItem("items")) || []
+                ).length;
+                document.getElementById("lblCartCount").innerHTML = lengthCart;
+                document.getElementById("myModal").style.display = "block";
+            }
+
+            function closeModal() {
+                document.getElementById("myModal").style.display = "none";
+            }
+
+            document
+                .getElementById("searchInput")
+                .addEventListener("input", function () {
+                    const searchName = this.value.toLowerCase();
+                    const selectCategory = document
+                        .getElementById("categorySelect")
+                        .value.toLowerCase();
+                    const finalProducts = allProducts.filter((produto) => {
+                        const prodName = produto.title
+                            .toLowerCase()
+                            .includes(searchName);
+                        const prodCat = selectCategory
+                            ? produto.category === selectCategory
+                            : true;
+                        return prodName && prodCat;
+                    });
+                    displayProducts(finalProducts);
+                });
+
+            document
+                .getElementById("categorySelect")
+                .addEventListener("change", function () {
+                    const searchName = document
+                        .getElementById("searchInput")
+                        .value.toLowerCase();
+                    const selectCategory = this.value.toLowerCase();
+                    const finalProducts = allProducts.filter((produto) => {
+                        const prodName = produto.title
+                            .toLowerCase()
+                            .includes(searchName);
+                        const prodCat = selectCategory
+                            ? produto.category === selectCategory
+                            : true;
+                        return prodName && prodCat;
+                    });
+                    displayProducts(finalProducts);
+                });
+
+            loadHeader();
+            loadFooter();
+            getAllCategories();
+            getAllProducts();
+        </script>
+    </body>
+</html>
